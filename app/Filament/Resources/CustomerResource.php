@@ -19,6 +19,8 @@ class CustomerResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationGroup = 'Master Data';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -67,12 +69,15 @@ class CustomerResource extends Resource
                 //     ->sortable(),
                 Tables\Columns\TextColumn::make('country.name')
                     ->label('Country')
+                    ->color('danger') // merah
                     ->formatStateUsing(fn($record) => "{$record->country->code} - {$record->country->name}")
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('identity_number')
+                    ->label('Nomor ID')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('name')
+                    ->label('NamaKonsumen')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
                     ->searchable(),
@@ -94,6 +99,7 @@ class CustomerResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -115,6 +121,7 @@ class CustomerResource extends Resource
         return [
             'index' => Pages\ListCustomers::route('/'),
             'create' => Pages\CreateCustomer::route('/create'),
+            'view' => Pages\ViewCustomer::route('/{record}'),
             'edit' => Pages\EditCustomer::route('/{record}/edit'),
         ];
     }

@@ -5,7 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Buying extends Model
+use App\Models\JualItem;
+
+class Jual extends Model
 {
     use HasFactory;
 
@@ -28,6 +30,6 @@ class Buying extends Model
 
     public function items()
     {
-        return $this->hasMany(BuyingItem::class);
+        return $this->hasMany(JualItem::class);
     }
 }

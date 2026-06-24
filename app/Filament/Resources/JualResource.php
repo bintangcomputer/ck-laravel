@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\BuyingResource\Pages;
-use App\Filament\Resources\BuyingResource\RelationManagers;
-use App\Models\Buying;
+use App\Filament\Resources\JualResource\Pages;
+use App\Filament\Resources\JualResource\RelationManagers;
+use App\Models\Jual;
+// use App\Models\Buying;
 use App\Models\Country;
 use App\Models\Customer;
 use App\Models\ExchangeRate;
@@ -26,19 +27,16 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class BuyingResource extends Resource
+
+class JualResource extends Resource
 {
-    protected static ?string $model = Buying::class;
+    protected static ?string $model = Jual::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationLabel = 'Input Penjualan';
 
-    protected static ?string $navigationLabel = 'Input Pembelian';
-
-    protected static ?string $navigationGroup = 'TransaksiPembelian';
-
-
-
+    protected static ?string $navigationGroup = 'TransaksiPenjualan';
 
     public static function form(Form $form): Form
     {
@@ -53,24 +51,15 @@ class BuyingResource extends Resource
 
                                 TextInput::make('bill_no')
                                     ->required()
-                                    ->live(onBlur: true)
-                                    ->afterStateUpdated(function ($state, Set $set) {
-
-                                        if (Buying::where('bill_no', $state)->exists()) {
-
-                                            $set('bill_message', 'Nomor Bukti sudah digunakan');
-                                        } else {
-
-                                            $set('bill_message', 'Nomor Bukti tersedia');
-                                        }
-                                    })
                                     ->unique(ignoreRecord: true)
                                     ->validationMessages([
                                         'unique' => 'Nomor Bukti Sudah Ada.',
                                     ])
                                     ->readOnly(fn($operation) => $operation === 'edit')
-
                                     ->label('Nomor Bukti'),
+
+
+                                // ->label('No Bukti')
                                 // ->required()
                                 // ->unique(),
 
@@ -172,8 +161,8 @@ class BuyingResource extends Resource
                                                     $set('currency_code', $rate->code);
 
                                                     $set(
-                                                        'buying_rate',
-                                                        $rate->buying_rate
+                                                        'selling_rate',
+                                                        $rate->selling_rate
                                                     );
                                                 }
                                             })
@@ -188,20 +177,20 @@ class BuyingResource extends Resource
 
                                                 $subtotal =
                                                     (float)$get('nominal') *
-                                                    (float)$get('buying_rate');
+                                                    (float)$get('selling_rate');
 
                                                 $set('subtotal', $subtotal);
                                             })
                                             ->required(),
 
-                                        TextInput::make('buying_rate')
+                                        TextInput::make('selling_rate')
                                             ->numeric()
                                             ->live(onBlur: true)
                                             ->afterStateUpdated(function (Get $get, Set $set) {
 
                                                 $subtotal =
                                                     (float)$get('nominal') *
-                                                    (float)$get('buying_rate');
+                                                    (float)$get('selling_rate');
 
                                                 $set('subtotal', $subtotal);
                                             })
@@ -281,10 +270,9 @@ class BuyingResource extends Resource
     public static function getPages(): array
     {
         return [
-            //'index' => Pages\ListBuyings::route('/'),
-            'index' => Pages\CreateBuying::route('/'),
-            'create' => Pages\CreateBuying::route('/create'),
-            'edit' => Pages\EditBuying::route('/{record}/edit'),
+            'index' => Pages\ListJuals::route('/'),
+            'create' => Pages\CreateJual::route('/create'),
+            'edit' => Pages\EditJual::route('/{record}/edit'),
         ];
     }
 }

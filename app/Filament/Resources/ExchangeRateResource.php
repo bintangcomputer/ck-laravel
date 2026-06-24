@@ -83,6 +83,7 @@ class ExchangeRateResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -104,7 +105,10 @@ class ExchangeRateResource extends Resource
         return [
             'index' => Pages\ListExchangeRates::route('/'),
             'create' => Pages\CreateExchangeRate::route('/create'),
+            'view' => Pages\ViewExchangeRate::route('/{record}'),
             'edit' => Pages\EditExchangeRate::route('/{record}/edit'),
+
+
         ];
     }
 }

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BuyingItem extends Model
+class JualItem extends Model
 {
     use HasFactory;
 
@@ -13,13 +13,13 @@ class BuyingItem extends Model
         'exchange_rate_id',
         'currency_code',
         'nominal',
-        'buying_rate',
+        'selling_rate',
         'subtotal',
     ];
 
-    public function buying()
+    public function jual()
     {
-        return $this->belongsTo(Buying::class);
+        return $this->belongsTo(Jual::class);
     }
 
     public function exchangeRate()
